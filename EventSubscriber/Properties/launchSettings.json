@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Engaze.Event.Subscriber.Service": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "NETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
