@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Engaze.Event.Subscriber.Service;
 
 namespace EventSubscriber
 {
@@ -32,7 +33,9 @@ namespace EventSubscriber
              {
                  services.AddLogging();
                  services.AddSingleton<EventStreamListener>();
+                 services.AddSingleton<IMessageHandler>();
                  services.AddHostedService<SubscriberService>();
+
              })
              .RunConsoleAsync();
 

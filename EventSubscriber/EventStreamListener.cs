@@ -1,7 +1,8 @@
-﻿using EventStore.ClientAPI;
+﻿using Engaze.Event.Subscriber.Service;
+using EventStore.ClientAPI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Net;
+using System;
 using System.Text;
 
 namespace EventSubscriber
@@ -18,14 +19,17 @@ namespace EventSubscriber
         /// </summary>
         private IEventStoreConnection conn;
 
+        private IMessageHandler messageHandler;
+
         /// <summary>
         /// The logger
         /// </summary>
         private ILogger<EventStreamListener> logger;
-        public EventStreamListener(IConfiguration configuration, ILogger<EventStreamListener> logger)
+        public EventStreamListener(IConfiguration configuration, ILogger<EventStreamListener> logger, IMessageHandler messageHandler)
         {
             this.logger = logger;
             this.configuration = configuration;
+            this.messageHandler = messageHandler;
         }
 
         public void OnRun()
@@ -34,9 +38,17 @@ namespace EventSubscriber
             var sub = conn.SubscribeToStreamAsync(stream, true,
                     (_, x) =>
                     {
-                        var data = Encoding.ASCII.GetString(x.Event.Data);
-                        this.logger.LogInformation("Received: " + x.Event.EventStreamId + ":" + x.Event.EventNumber);
-                        this.logger.LogInformation(data);
+                        try
+                        {
+                            var data = Encoding.ASCII.GetString(x.Event.Data);
+                            messageHandler.ProcessMessage(x.Event);
+                            this.logger.LogInformation("Received: " + x.Event.EventStreamId + ":" + x.Event.EventNumber);
+                            this.logger.LogInformation(data);
+                        }
+                        catch(Exception ex)
+                        {
+                            logger.LogError(ex, "", null);
+                        }
                     });
         }
 
@@ -44,7 +56,8 @@ namespace EventSubscriber
         {
             var settings = ConnectionSettings.Create();
             var portNumber = configuration.GetValue<int>("EventStorePort");
-            conn = EventStoreConnection.Create(settings, new IPEndPoint(IPAddress.Loopback, portNumber));
+            //conn = EventStoreConnection.Create(settings, new IPEndPoint(IPAddress.Loopback, portNumber));
+            conn = EventStoreConnection.Create(new Uri("tcp://event-store:1113"));
             conn.ConnectAsync().Wait();
         }
 
