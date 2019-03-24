@@ -29,4 +29,4 @@ WORKDIR /app
 COPY --from=publish /app .
 
 # Run the app
-ENTRYPOINT ["dotnet", "Engaze.EventSubscriber.dll"]
+ENTRYPOINT ["dotnet", "Engaze.EventSubscriber.Service.dll"]

@@ -3,12 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <AssemblyName>Engaze.Event.Subscriber.Service</AssemblyName>
-    <RootNamespace>Engaze.Event.Subscriber.Service</RootNamespace>
+    <AssemblyName>Engaze.EventSubscriber.Service</AssemblyName>
+    <RootNamespace>Engaze.EventSubscriber.Service</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Engaze.Core.MessageBroker.Producer" Version="1.0.1-alpha" />
+    <PackageReference Include="Engaze.Core.MessageBroker.Producer" Version="1.0.2-alpha" />
     <PackageReference Include="EventStore.Client" Version="5.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
