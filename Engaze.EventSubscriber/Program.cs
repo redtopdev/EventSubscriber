@@ -6,6 +6,8 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Engaze.Event.Subscriber.Service;
+using Engaze.Core.MessageBroker;
+using EventStore.ClientAPI;
 
 namespace EventSubscriber
 {
@@ -13,11 +15,11 @@ namespace EventSubscriber
     {
         public static void Main(string[] args)
         {
-            new HostBuilder().ConfigureHostConfiguration(configHost =>
-            {
-                configHost.AddCommandLine(args);
-                configHost.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            })
+            var host = new HostBuilder().ConfigureHostConfiguration(configHost =>
+             {
+                 configHost.AddCommandLine(args);
+                 configHost.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+             })
             .ConfigureAppConfiguration((hostContext, configApp) =>
             {
                 hostContext.HostingEnvironment.EnvironmentName = System.Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
@@ -32,14 +34,17 @@ namespace EventSubscriber
              }).ConfigureServices((hostContext, services) =>
              {
                  services.AddLogging();
+                 services.AddSingleton<KafkaConfiguration>();
+                 services.AddSingleton(typeof(IMessageProducer<RecordedEvent>), typeof(KafkaProducer<RecordedEvent>));
                  services.AddSingleton<EventStreamListener>();
-                 services.AddSingleton<IMessageHandler>();
+                 services.AddSingleton(typeof(IMessageHandler), typeof(KafkaWriter));
                  services.AddHostedService<SubscriberService>();
 
-             })
-             .RunConsoleAsync();
+             }).Build();
+            host.Run();
 
-            Console.ReadLine();
+
+            //Console.ReadLine();
         }
     }
 }
