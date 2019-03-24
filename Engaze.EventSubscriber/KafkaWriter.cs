@@ -14,7 +14,7 @@ namespace Engaze.Event.Subscriber.Service
         }
         public async Task ProcessMessage(RecordedEvent message)
         {
-            await messageProducer.WriteAsync(message, "Evento");
+            await messageProducer.WriteAsync(message, "evento");
         }
     }
 }
