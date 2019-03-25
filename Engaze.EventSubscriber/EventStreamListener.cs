@@ -58,10 +58,8 @@ namespace EventSubscriber
 
         public void OnStart()
         {
-            var settings = ConnectionSettings.Create();
-            //var portNumber = configuration.GetValue<int>("EventStorePort");
-            //conn = EventStoreConnection.Create(settings, new IPEndPoint(IPAddress.Loopback, portNumber));
-            conn = EventStoreConnection.Create(new Uri("tcp://event-store:1113"));
+            var settings = ConnectionSettings.Create();           
+            conn = EventStoreConnection.Create(new Uri(configuration.GetValue<string>("EVENTSTORE_CONNSTRING")));
             conn.ConnectAsync().Wait();
         }
 
