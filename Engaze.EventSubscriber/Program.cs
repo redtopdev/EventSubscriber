@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Engaze.Event.Subscriber.Service;
@@ -19,6 +18,7 @@ namespace EventSubscriber
              {
                  configHost.AddCommandLine(args);
                  configHost.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                 configHost.AddEnvironmentVariables();
              })
             .ConfigureAppConfiguration((hostContext, configApp) =>
             {
@@ -42,9 +42,6 @@ namespace EventSubscriber
 
              }).Build();
             host.Run();
-
-
-            //Console.ReadLine();
         }
     }
 }

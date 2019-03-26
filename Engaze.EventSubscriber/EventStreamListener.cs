@@ -3,7 +3,6 @@ using EventStore.ClientAPI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Net;
 using System.Text;
 
 namespace EventSubscriber
@@ -43,9 +42,7 @@ namespace EventSubscriber
                         try
                         {
                             var data = Encoding.ASCII.GetString(x.Event.Data);
-                            messageHandler.ProcessMessage(x.Event);
-                            Console.WriteLine("Received: " + x.Event.EventStreamId + ":" + x.Event.EventNumber);
-                            Console.WriteLine(data);
+                            messageHandler.ProcessMessage(x.Event);                           
                            this.logger.LogInformation("Received: " + x.Event.EventStreamId + ":" + x.Event.EventNumber);
                             this.logger.LogInformation(data);
                         }
@@ -67,6 +64,5 @@ namespace EventSubscriber
         {
             conn.Dispose();
         }
-
     }
 }
