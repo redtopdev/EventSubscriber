@@ -38,15 +38,14 @@ namespace EventSubscriber
             this.configuration = configuration;
             this.hostingEnvironment = hostingEnvironment;
             this.eventStreamListener = eventStreamListener;
-            this.hostingEnvironment.ApplicationName = string.Format(serviceName, configuration.GetValue<string>("StreamName"));
+            this.hostingEnvironment.ApplicationName = string.Format(serviceName, configuration.GetValue<string>("TestName"));
         }
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation($"{this.hostingEnvironment.ApplicationName} is starting");       
+            logger.LogInformation($"{this.hostingEnvironment.ApplicationName} is starting");
             try
             {
-                eventStreamListener.OnStart();
-                await Task.Factory.StartNew(() => eventStreamListener.OnRun(), TaskCreationOptions.LongRunning);
+                await eventStreamListener.OnStart();
             }
             catch (Exception ex)
             {
