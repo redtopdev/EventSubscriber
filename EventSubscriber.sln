@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engaze.EventSubscriber", "Engaze.EventSubscriber\Engaze.EventSubscriber.csproj", "{05EE5003-190C-4D38-977A-ED9908026978}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engaze.Core.MessageBroker.Producer", "..\Core\Engaze.Core.MessageBroker\Engaze.Core.MessageBroker.Producer.csproj", "{0D9D0F68-4E4A-408A-B4FB-F46742B73F05}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{05EE5003-190C-4D38-977A-ED9908026978}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05EE5003-190C-4D38-977A-ED9908026978}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05EE5003-190C-4D38-977A-ED9908026978}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D9D0F68-4E4A-408A-B4FB-F46742B73F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D9D0F68-4E4A-408A-B4FB-F46742B73F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D9D0F68-4E4A-408A-B4FB-F46742B73F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D9D0F68-4E4A-408A-B4FB-F46742B73F05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

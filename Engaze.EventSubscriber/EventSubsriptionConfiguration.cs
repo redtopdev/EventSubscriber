@@ -1,6 +1,6 @@
 ﻿namespace Engaze.EventSubscriber.Service
 {
-    public class EventSubsriptionSetting
+    public class EventSubsriptionConfiguration
     {
         public string ConnString { get; set; }
         public string Stream { get; set; }

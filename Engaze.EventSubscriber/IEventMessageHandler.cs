@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Engaze.Event.Subscriber.Service
 {
-    interface IMessageHandler
+    interface IEventMessageHandler
     {
-        Task ProcessMessage(RecordedEvent message);
+        Task ProcessMessage(byte[] message);
     }
 }

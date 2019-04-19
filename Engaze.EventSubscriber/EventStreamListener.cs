@@ -23,17 +23,17 @@ namespace EventSubscriber
         /// </summary>
         private IEventStoreConnection conn;
 
-        private IMessageHandler messageHandler;
+        private IEventMessageHandler messageHandler;
 
         private readonly UserCredentials User;
 
-        private EventSubsriptionSetting settings;
+        private EventSubsriptionConfiguration settings;
 
         /// <summary>
         /// The logger
         /// </summary>
         private ILogger<EventStreamListener> logger;
-        public EventStreamListener(IOptions<EventSubsriptionSetting> options, IConfiguration configuration, ILogger<EventStreamListener> logger, IMessageHandler messageHandler)
+        public EventStreamListener(IOptions<EventSubsriptionConfiguration> options, IConfiguration configuration, ILogger<EventStreamListener> logger, IEventMessageHandler messageHandler)
         {
             this.logger = logger;
             this.configuration = configuration;
@@ -71,8 +71,9 @@ namespace EventSubscriber
             try
             {
                 var data = Encoding.ASCII.GetString(resolvedEvent.Event.Data);
-                messageHandler.ProcessMessage(resolvedEvent.Event);
+                messageHandler.ProcessMessage(resolvedEvent.Event.Data);
                 this.logger.LogInformation("Received: " + resolvedEvent.Event.EventStreamId + ":" + resolvedEvent.Event.EventNumber);
+                Console.WriteLine("Received: " + resolvedEvent.Event.EventStreamId + ":" + resolvedEvent.Event.EventNumber);
                 this.logger.LogInformation(data);
             }
             catch (Exception ex)

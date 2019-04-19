@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <!--<PackageReference Include="Engaze.Core.MessageBroker.Producer" Version="1.0.2-alpha" />-->
+    <PackageReference Include="Engaze.Core.MessageBroker.Producer" Version="1.0.3-alpha" />
     <PackageReference Include="EventStore.Client" Version="5.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />  
@@ -21,10 +22,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />  
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
     
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Engaze.Core.MessageBroker\Engaze.Core.MessageBroker.Producer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

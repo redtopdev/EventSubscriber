@@ -1,4 +1,5 @@
 ﻿using Engaze.Core.MessageBroker;
+using Engaze.Core.MessageBroker.Producer;
 using Engaze.Event.Subscriber.Service;
 using Engaze.EventSubscriber.Service;
 using EventStore.ClientAPI;
@@ -12,8 +13,7 @@ namespace EventSubscriber
     class Program
     {
         public static void Main(string[] args)
-        {
-            IServiceCollection serviceCollection = null;
+        {           
             var host = new HostBuilder().ConfigureHostConfiguration(configHost =>
              {
                  configHost.AddCommandLine(args);
@@ -33,14 +33,13 @@ namespace EventSubscriber
                  }
              }).ConfigureServices((hostContext, services) =>
              {
-                 services.Configure<EventSubsriptionSetting>(hostContext.Configuration.GetSection("EventSubsriptionSetting"));
+                 services.Configure<EventSubsriptionConfiguration>(hostContext.Configuration.GetSection("EventSubsriptionConfiguration"));
+                 services.ConfigureKafkaService(hostContext.Configuration);
                  services.AddLogging();
-                 services.AddSingleton<KafkaConfiguration>();
-                 services.AddSingleton(typeof(IMessageProducer<RecordedEvent>), typeof(KafkaProducer<RecordedEvent>));
+                 services.AddSingleton<KafkaConfiguration>();                
                  services.AddSingleton<EventStreamListener>();
-                 services.AddSingleton(typeof(IMessageHandler), typeof(KafkaWriter));
-                 services.AddHostedService<SubscriberService>();
-                 serviceCollection = services;
+                 services.AddSingleton(typeof(IEventMessageHandler), typeof(EventMessageHandler));
+                 services.AddHostedService<SubscriberService>();                
              }).Build();
             host.Run();
         }
