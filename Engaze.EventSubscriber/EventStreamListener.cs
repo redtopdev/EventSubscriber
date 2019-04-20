@@ -71,14 +71,17 @@ namespace EventSubscriber
             try
             {
                 var data = Encoding.ASCII.GetString(resolvedEvent.Event.Data);
-                messageHandler.ProcessMessage(resolvedEvent.Event.Data);
                 this.logger.LogInformation("Received: " + resolvedEvent.Event.EventStreamId + ":" + resolvedEvent.Event.EventNumber);
                 Console.WriteLine("Received: " + resolvedEvent.Event.EventStreamId + ":" + resolvedEvent.Event.EventNumber);
                 this.logger.LogInformation(data);
+                messageHandler.ProcessMessage(resolvedEvent.Event.Data);
+               
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "", null);
+                Console.WriteLine(ex.ToString());
+
             }
 
             return Task.CompletedTask;
