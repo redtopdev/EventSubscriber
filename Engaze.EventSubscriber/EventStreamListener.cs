@@ -74,7 +74,7 @@ namespace EventSubscriber
                 this.logger.LogInformation("Received: " + resolvedEvent.Event.EventStreamId + ":" + resolvedEvent.Event.EventNumber);
                 Console.WriteLine("Received: " + resolvedEvent.Event.EventStreamId + ":" + resolvedEvent.Event.EventNumber);
                 this.logger.LogInformation(data);
-                messageHandler.ProcessMessage(resolvedEvent.Event.Data);
+                messageHandler.ProcessMessage(resolvedEvent);
                
             }
             catch (Exception ex)
@@ -86,5 +86,6 @@ namespace EventSubscriber
 
             return Task.CompletedTask;
         }
+       
     }
 }
