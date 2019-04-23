@@ -46,6 +46,7 @@ namespace EventSubscriber
         {
             conn = EventStoreConnection.Create(new Uri(settings.ConnString));
             await conn.ConnectAsync();
+            CreateSubscription();
             ConnectToSubscription();
         }
 
@@ -84,6 +85,24 @@ namespace EventSubscriber
             }
 
             return Task.CompletedTask;
-        }       
+        }
+
+        private void CreateSubscription()
+        {
+            PersistentSubscriptionSettings settings = PersistentSubscriptionSettings.Create()
+                .StartFromCurrent();
+            try
+            {
+                conn.CreatePersistentSubscriptionAsync(this.settings.Stream, this.settings.SubscriptionGroup, settings, User).Wait();
+            }
+            catch (AggregateException ex)
+            {
+                if (ex.InnerException.GetType() != typeof(InvalidOperationException)
+                    && ex.InnerException?.Message != $"Subscription group {this.settings.SubscriptionGroup} on stream {this.settings.Stream} already exists")
+                {
+                    throw;
+                }
+            }
+        }
     }
 }
