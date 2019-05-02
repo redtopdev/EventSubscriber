@@ -21,10 +21,22 @@ namespace Engaze.Event.Subscriber.Service
 
         private byte[] ComposeMessageForProducer(ResolvedEvent @event)
         {
-            dynamic eventoJObject = new JObject();
-            eventoJObject.Data = Encoding.UTF8.GetString(@event.Event.Data);
-            eventoJObject.EventType = GetEventTypeShortName(@event.Event.EventType);
-            return Encoding.UTF8.GetBytes(eventoJObject.ToString());
+            try
+            {
+                dynamic eventoJObject = new JObject();
+                string eventoId = @event.Event.EventStreamId.Substring(@event.Event.EventStreamId.IndexOf('-') + 1);
+
+                JObject data = JObject.Parse(Encoding.UTF8.GetString(@event.Event.Data));
+                data.Add("EventoId", eventoId);
+                eventoJObject.Data = data;              
+                eventoJObject.EventType = GetEventTypeShortName(@event.Event.EventType);
+                return Encoding.UTF8.GetBytes(eventoJObject.ToString());
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw ex;
+            }
 
         }
 
