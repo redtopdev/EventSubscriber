@@ -56,7 +56,7 @@ namespace EventSubscriber
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Timed Background Service is stopping.");
+            logger.LogInformation("Subscriber Background Service is stopping.");
             try
             {
                 eventStreamListener.OnStop();
