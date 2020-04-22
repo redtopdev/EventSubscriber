@@ -20,7 +20,8 @@ services:
   
 networks:
   engaze-network:
-    driver: bridge
+     external:
+      name: eventstore_engaze-network
     
 volumes:  
   eventosubscribe:
