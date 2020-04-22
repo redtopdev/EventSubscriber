@@ -1,0 +1,26 @@
+version: '3.1'
+
+services: 
+  
+ 
+      
+  eventosubscriber:
+    image: engaze/eventosubscriber
+    entrypoint: /bin/bash -c "echo 'Waiting for event-store and kafka to up and running' && sleep 60 && dotnet Engaze.EventSubscriber.Service.dll"
+    restart: always
+    container_name: eventosubscriber   
+    volumes:
+      - 'eventosubscribe:/usr/share//eventosubscribe/log'
+    environment:     
+      - EVENTSTORE_CONNSTRING=${EVENTSTORECONNSTRING}
+      - NETCORE_ENVIRONMENT=${ENVIRONMENT}
+    networks:
+       
+  
+networks:
+  engaze-network:
+    driver: bridge
+    
+volumes:  
+  eventosubscribe:
+ 
