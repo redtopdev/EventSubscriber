@@ -15,6 +15,7 @@ services:
       - EVENTSTORE_CONNSTRING=${EVENTSTORECONNSTRING}
       - NETCORE_ENVIRONMENT=${ENVIRONMENT}
     networks:
+     - engaze-network
        
   
 networks:
