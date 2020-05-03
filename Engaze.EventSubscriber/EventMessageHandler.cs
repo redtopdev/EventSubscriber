@@ -1,6 +1,7 @@
-﻿using Engaze.Core.MessageBroker;
+﻿using Engaze.Core.Common;
+using Engaze.Core.DataContract;
+using Engaze.Core.MessageBroker;
 using EventStore.ClientAPI;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,30 +10,31 @@ namespace Engaze.Event.Subscriber.Service
 {
     public class EventMessageHandler : IEventMessageHandler
     {
-        private IMessageProducer<byte[]> messageProducer;
-        public EventMessageHandler(IMessageProducer<byte[]> messageProducer)
+        private IMessageProducer<dynamic> messageProducer;
+        private KafkaConfiguration kafkaConfiguration;
+        public EventMessageHandler(IMessageProducer<dynamic> messageProducer, KafkaConfiguration kafkaConfiguration)
         {
             this.messageProducer = messageProducer;
+            this.kafkaConfiguration = kafkaConfiguration;
         }
         public async Task ProcessMessage(ResolvedEvent @event)
         {
-            await  messageProducer.WriteAsync(ComposeMessageForProducer(@event), "evento");
+            await messageProducer.WriteAsync(ComposeMessageForProducer(@event), kafkaConfiguration.Topic);
         }
 
-        private byte[] ComposeMessageForProducer(ResolvedEvent @event)
+        private EventStoreEvent ComposeMessageForProducer(ResolvedEvent @event)
         {
             try
             {
-                dynamic eventoJObject = new JObject();
-                string eventoId = @event.Event.EventStreamId.Substring(@event.Event.EventStreamId.IndexOf('-') + 1);
-
-                JObject data = JObject.Parse(Encoding.UTF8.GetString(@event.Event.Data));
-                data.Add("EventoId", eventoId);
-                eventoJObject.Data = data;              
-                eventoJObject.EventType = GetEventTypeShortName(@event.Event.EventType);
-                return Encoding.UTF8.GetBytes(eventoJObject.ToString());
+                return  new EventStoreEvent()
+                {
+                    EventId = Guid.Parse(@event.Event.EventStreamId.Substring(@event.Event.EventStreamId.IndexOf('-') + 1)),
+                    Data = Encoding.UTF8.GetString(@event.Event.Data),
+                    EventType = (OccuredEventType)Enum.Parse(typeof(OccuredEventType), GetEventTypeShortName(@event.Event.EventType))
+                };
+                
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 throw ex;

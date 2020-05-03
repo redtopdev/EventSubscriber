@@ -1,8 +1,7 @@
-﻿using Engaze.Core.MessageBroker;
+﻿using Engaze.Core.Common;
 using Engaze.Core.MessageBroker.Producer;
 using Engaze.Event.Subscriber.Service;
 using Engaze.EventSubscriber.Service;
-using EventStore.ClientAPI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +33,7 @@ namespace EventSubscriber
              }).ConfigureServices((hostContext, services) =>
              {
                  services.Configure<EventSubsriptionConfiguration>(hostContext.Configuration.GetSection("EventSubsriptionConfiguration"));
-                 services.ConfigureKafkaService(hostContext.Configuration);
+                 services.ConfigureProducerService(hostContext.Configuration);
                  services.AddLogging();
                  services.AddSingleton<KafkaConfiguration>();                
                  services.AddSingleton<EventStreamListener>();
